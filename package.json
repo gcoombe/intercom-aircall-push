@@ -1,6 +1,6 @@
 {
   "name": "intercom-aircall-push",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hook to automatically create new contacts in aircall when new intercom users are created.",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gcoombe/intercom-aircall-push.git"
+    "url": "https://github.com/gcoombe/intercom-aircall-push.git"
   },
   "author": "Fetch Auto <graham@fetchauto.ca> (https://fetchauto.ca)",
   "license": "ISC",
