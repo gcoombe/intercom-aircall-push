@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/gcoombe/intercom-aircall-push.git"
   },
-  "author": "Fetch Auto",
+  "author": "Fetch Auto <graham@fetchauto.ca> (https://fetchauto.ca)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/gcoombe/intercom-aircall-push/issues"
