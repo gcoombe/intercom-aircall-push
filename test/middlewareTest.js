@@ -1,7 +1,7 @@
 const middleware = require("../src/middleware");
 const crypto = require("crypto");
 const expect = require("chai").expect;
-const sinon = require("sinon");
+const HmacValidationError = require("../src/hmacValidationError");
 
 describe("middleware", function () {
     describe("verifyHmac", function () {
@@ -12,13 +12,6 @@ describe("middleware", function () {
             }
         };
 
-        const generateRes = (expectedStatus) => {
-            return {
-                sendStatus: sinon.spy((statusCode) => {
-                    expect(statusCode).to.be.eql(expectedStatus);
-                })
-            }
-        };
 
         it("Accepts matching hashes", function () {
             const body = JSON.stringify({
@@ -29,9 +22,7 @@ describe("middleware", function () {
                 }
             });
             const req = generateReq(crypto.createHmac("sha1", hubSecret).update(body).digest("hex"));
-            const res = generateRes();
-            middleware.verifyHmac(hubSecret)(req, res, Buffer.from(body));
-            sinon.assert.notCalled(res.sendStatus);
+            expect(middleware.verifyHmac(hubSecret).bind(null, req, {}, Buffer.from(body))).to.not.throw();
         });
 
         it("Returns 400 if sha doesn't match", function () {
@@ -43,10 +34,7 @@ describe("middleware", function () {
                 }
             });
             const req = generateReq(crypto.createHmac("sha1", "wrongSecret").update(body).digest("hex"));
-            let res = generateRes(400);
-            middleware.verifyHmac(hubSecret)(req, res, Buffer.from(body));
-            sinon.assert.calledOnce(res.sendStatus);
-            sinon.assert.calledWith(res.sendStatus, 400);
+            expect(middleware.verifyHmac(hubSecret).bind(null, req, {}, Buffer.from(body))).to.throw(HmacValidationError);
         });
 
         it("Returns 400 if there is no header", function () {
@@ -58,10 +46,8 @@ describe("middleware", function () {
                 }
             });
             const req = generateReq();
-            let res = generateRes(400);
-            middleware.verifyHmac(hubSecret)(req, res, Buffer.from(body));
-            sinon.assert.calledOnce(res.sendStatus);
-            sinon.assert.calledWith(res.sendStatus, 400);
+            expect(middleware.verifyHmac(hubSecret).bind(null, req, {}, Buffer.from(body))).to.throw(HmacValidationError);
+
         });
     });
 });

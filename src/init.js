@@ -1,6 +1,7 @@
 const express = require("express");
 const middleware = require("./middleware");
 const AirCallClient = require("./aircallClient");
+const HmacValidationError = require("./hmacValidationError");
 const bodyParser = require("body-parser");
 
 const REQUIRED_OPTIONS = ["aircallApiId", "aircallApiToken", "intercomWebhookPath"];
@@ -28,6 +29,12 @@ const init = (options) => {
             res.sendStatus(200);
         }).catch(() => res.sendStatus(500));
 
+    });
+    router.use((err, req, res, next) => {
+        if (err instanceof HmacValidationError) {
+            return res.sendStatus(400);
+        }
+        next(err);
     });
     return router;
 
