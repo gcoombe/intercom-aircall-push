@@ -9,7 +9,7 @@ middleware.verifyHmac = (hubSecret) => (req, res, buf, encoding) => {
             throw new HmacValidationError("No hub signature found in header");
         }
 
-        const hash = hashHeader.substring(hashHeader.indexOf("sha1=") + 1);
+        const hash = hashHeader.replace("sha1=", "");
         const hmac = crypto.createHmac("sha1", hubSecret);
         hmac.update(buf, encoding);
         if (hash !== hmac.digest("hex")) {

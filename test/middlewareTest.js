@@ -21,7 +21,7 @@ describe("middleware", function () {
                     }
                 }
             });
-            const req = generateReq(crypto.createHmac("sha1", hubSecret).update(body).digest("hex"));
+            const req = generateReq("sha1=" + crypto.createHmac("sha1", hubSecret).update(body).digest("hex"));
             expect(middleware.verifyHmac(hubSecret).bind(null, req, {}, Buffer.from(body))).to.not.throw();
         });
 
@@ -33,7 +33,7 @@ describe("middleware", function () {
                     }
                 }
             });
-            const req = generateReq(crypto.createHmac("sha1", "wrongSecret").update(body).digest("hex"));
+            const req = generateReq("sha1=" + crypto.createHmac("sha1", "wrongSecret").update("sha1=" + body).digest("hex"));
             expect(middleware.verifyHmac(hubSecret).bind(null, req, {}, Buffer.from(body))).to.throw(HmacValidationError);
         });
 

@@ -19,7 +19,7 @@ const body = {
     }
 };
 
-const headers = argv.hubSecret ? {"X-Hub-Signature": crypto.createHmac("sha1", argv.hubSecret).update(JSON.stringify(body)).digest("hex")} : {};
+const headers = argv.hubSecret ? {"X-Hub-Signature": "sha1=" + crypto.createHmac("sha1", argv.hubSecret).update(JSON.stringify(body)).digest("hex")} : {};
 
 axios.post(argv.webhookUrl, body, {headers}).then(() => {
     console.log("Sent successfully");
