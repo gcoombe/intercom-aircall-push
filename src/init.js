@@ -11,7 +11,7 @@ const init = (options) => {
     verifyRequiredOptions(options);
     const aircallClient = new AirCallClient(options.aircallApiId, options.aircallApiToken);
 
-    router.use(bodyParser.json({verify: middleware.verifyHmac(options.hubSecret)}));
+    router.use(options.intercomWebhookPath, bodyParser.json({verify: middleware.verifyHmac(options.hubSecret)}));
     router.post(options.intercomWebhookPath, (req, res) => {
         if (req.body.topic !== "user.created") {
             return res.sendStatus(200);
