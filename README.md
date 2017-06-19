@@ -10,8 +10,8 @@ npm install intercom-aircall-push
 ```
 ## Setup
 Configure a subscription in intercom which will be notified whenever a user is created:
-1. Instructions for creating a subscription are here: https://developers.intercom.com/v2.0/reference#manage-subscriptions
-   - **Recommended:** create a hubSecret so that notifications are signed. Not required but recommended 
+1. Instructions for creating a subscription are here: https://developers.intercom.com/v2.0/reference#manage-subscriptions. Select the topics: User created and User email updated.
+   - **Recommended:** create a hubSecret so that notifications are signed. Not required but recommended
 2. Create an aircall apiToken: https://developer.aircall.io/#authentication
 
 ## Usage

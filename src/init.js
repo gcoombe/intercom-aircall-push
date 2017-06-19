@@ -14,21 +14,22 @@ const init = (options) => {
 
     router.use(options.intercomWebhookPath, bodyParser.json({verify: middleware.verifyHmac(options.hubSecret)}));
     router.post(options.intercomWebhookPath, (req, res) => {
-        if (req.body.topic !== "user.created") {
+        const body = req.body.data.item;
+        //Sometimes on user creation this comes through as 2 separate events.  A user create and then a user email update
+        if ((req.body.topic === "user.created" && body.email) || req.body.topic === "user.email.updated") {
+            const body = req.body.data.item;
+            aircallClient.postContact({
+                firstName: body.name && body.name.split(" ")[0],
+                lastName: body.name && body.name.split(" ")[1],
+                email: body.email,
+                phoneNumber: body.phone,
+                companyName: body.companies && body.companies[0] && body.companies[0].name
+            }).then(() => {
+                res.sendStatus(200);
+            }).catch(() => res.sendStatus(500));
+        } else {
             return res.sendStatus(200);
         }
-
-        const body = req.body.data.item;
-        aircallClient.postContact({
-            firstName: body.name && body.name.split(" ")[0],
-            lastName: body.name && body.name.split(" ")[1],
-            email: body.email,
-            phoneNumber: body.phone,
-            companyName: body.companies && body.companies[0] && body.companies[0].name
-        }).then(() => {
-            res.sendStatus(200);
-        }).catch(() => res.sendStatus(500));
-
     });
     router.use((err, req, res, next) => {
         if (err instanceof HmacValidationError) {
