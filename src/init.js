@@ -1,22 +1,17 @@
 const express = require("express");
 const middleware = require("./middleware");
-const bodyParser = require("body-parser");
 const AirCallClient = require("./aircallClient");
+const bodyParser = require("body-parser");
 
 const REQUIRED_OPTIONS = ["aircallApiId", "aircallApiToken", "intercomWebhookPath"];
 
 const init = (options) => {
     const router = express.Router();
 
-    router.use(bodyParser.json());
     verifyRequiredOptions(options);
-
-    if (options.hubSecret) {
-        router.use(middleware.signedNotification(options.hubSecret));
-    }
-
     const aircallClient = new AirCallClient(options.aircallApiId, options.aircallApiToken);
 
+    router.use(bodyParser.json({verify: middleware.verifyHmac(options.hubSecret)}));
     router.post(options.intercomWebhookPath, (req, res) => {
         if (req.body.topic !== "user.created") {
             return res.sendStatus(200);

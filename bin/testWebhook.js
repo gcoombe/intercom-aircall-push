@@ -14,7 +14,7 @@ const body = {
             type: "user",
             email: "test@test.com",
             phone: "+33631000000",
-            name: "Test user"
+            name: "Test user4"
         }
     }
 };

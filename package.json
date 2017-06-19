@@ -1,6 +1,6 @@
 {
   "name": "intercom-aircall-push",
-  "version": "0.2.0",
+  "version": "0.2.3",
   "description": "Hook to automatically create new contacts in aircall when new intercom users are created.",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,8 @@
     "body-parser": "^1.17.2",
     "chai": "^4.0.2",
     "express": "^4.15.3",
-    "mocha": "^3.4.2"
+    "mocha": "^3.4.2",
+    "sinon": "^2.3.4"
   },
   "devDependencies": {
     "eslint": "^4.0.0",
