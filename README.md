@@ -1,4 +1,6 @@
 # Intercom aircall push
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/gcoombe/intercom-aircall-push.svg)](https://greenkeeper.io/)
 > Keep your intercom users in sync with your aircall contacts
 
 ## Purpose
